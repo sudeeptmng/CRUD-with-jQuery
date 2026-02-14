@@ -1,4 +1,16 @@
-var items = groceryItems;
+function getLocalStorage() {
+  var list = localStorage.getItem("grocery-list");
+  if (list) {
+    return JSON.parse(list);
+  }
+  return [];
+}
+
+function setLocalStorage(itemsArray) {
+  localStorage.setItem("grocery-list", JSON.stringify(itemsArray));
+}
+
+var items = getLocalStorage();
 var editId = null;
 
 function render() {
@@ -26,6 +38,7 @@ function editCompleted(itemId) {
     return item;
   });
 
+  setLocalStorage(items);
   render();
 }
 
@@ -34,6 +47,7 @@ function removeItem(itemId) {
     return item.id !== itemId;
   });
 
+  setLocalStorage(items);
   render();
 
   setTimeout(function () {
@@ -53,6 +67,7 @@ function addItem(itemName) {
   };
 
   items.push(newItem);
+  setLocalStorage(items);
   render();
 
   setTimeout(function () {
@@ -69,6 +84,7 @@ function updateItemName(newName) {
   });
 
   editId = null;
+  setLocalStorage(items);
   render();
 
   setTimeout(function () {
